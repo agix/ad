@@ -13,13 +13,14 @@
  *  ad.user(userName).password(password);
  *  ad.user(userName).passwordNeverExpires();
  *  ad.user(userName).passwordExpires();
+ *  ad.user(userName).expirePassword();
  *  ad.user(userName).enable();
  *  ad.user(userName).disable();
  *  ad.user(userName).move(location);
  *  ad.user(userName).unlock();
  *  ad.user(userName).remove();
  *  ad.user(userName).location();
- *  
+ *
  *  ad.group().get(opts);
  *  ad.group().add();
  *  ad.group(groupName).get(opts);
@@ -28,13 +29,13 @@
  *  ad.group(groupName).addUser(userName);
  *  ad.group(groupName).removeUser(userName);
  *  ad.group(groupName).remove();
- *  
+ *
  *  ad.ou().get(opts);
  *  ad.ou().add(opts);
  *  ad.ou(ouName).get();
  *  ad.ou(ouName).exists();
  *  ad.ou(ouName).remove();
- *  
+ *
  *  ad.other().get(opts);
  *  ad.all().get(opts);
  *  ad.find(searchString);
@@ -83,6 +84,9 @@ module.exports = {
       },
       passwordExpires: () => {
         return this.enableUser(userName);
+      },
+      expirePassword: () => {
+        return this.expireUserPassword(userName);
       },
       enable: () => {
         return this.enableUser(userName);

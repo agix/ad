@@ -13,6 +13,7 @@ const parseLocation = require('./util/parseLocation');
  *  userIsMemberOf(userName, groupName)
  *  authenticateUser(userName, pass)
  *  setUserPassword(userName, pass)
+ *  expireUserPassword(username)
  *  setUserPasswordNeverExpires(userName)
  *  enableUser(userName)
  *  disableUser(userName)
@@ -317,6 +318,13 @@ module.exports = {
         .catch(reject);
     });
   },
+
+  async expireUserPassword(userName) {
+    return this._userReplaceOperation(userName, {
+      pwdLastSet: 0
+    });
+  },
+
 
   async setUserCN(userName, cn) {
     return new Promise(async (resolve, reject) => {
