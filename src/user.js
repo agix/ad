@@ -63,7 +63,9 @@ module.exports = {
           ? 'Invalid email address.'
           : !commonName
             ? 'A commonName is required.'
-            : !userName ? 'A userName is required.' : true;
+            : !userName
+              ? 'A userName is required.'
+              : true;
 
       if (valid !== true) {
         /* istanbul ignore next */
@@ -231,6 +233,7 @@ module.exports = {
       userName = userName.indexOf('@') > -1 ? userName.split('@')[0] : userName;
       const filter = `(|(userPrincipalName=${userName}@${domain})(sAMAccountName=${userName}))`;
       const params = {
+        attributes: opts.fields,
         filter,
         includeMembership: ['all'],
         includeDeleted: false
@@ -324,7 +327,6 @@ module.exports = {
       pwdLastSet: 0
     });
   },
-
 
   async setUserCN(userName, cn) {
     return new Promise(async (resolve, reject) => {
