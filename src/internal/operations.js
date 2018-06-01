@@ -33,8 +33,6 @@ module.exports = {
 
   async _operationByUser(userName, operation) {
     return new Promise(async (resolve, reject) => {
-      const domain = this.config.domain;
-      userName = `${userName}@${domain}`;
       this.findUser(userName)
         .then(async userObject => {
           if (!userObject || !userObject.dn) {

@@ -233,11 +233,13 @@ module.exports = {
       userName = userName.indexOf('@') > -1 ? userName.split('@')[0] : userName;
       const filter = `(|(userPrincipalName=${userName}@${domain})(sAMAccountName=${userName}))`;
       const params = {
-        attributes: opts.fields,
         filter,
         includeMembership: ['all'],
         includeDeleted: false
       };
+      if (opts && opts.fields) {
+        params.attributes = opts.fields;
+      }
       this.ad.find(params, (err, results) => {
         if (err) {
           /* istanbul ignore next */
