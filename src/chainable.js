@@ -186,5 +186,37 @@ module.exports = {
 
   find(searchString, opts) {
     return this._search(searchString, opts);
+  },
+
+  async bitlocker(computer) {
+    return new Promise(async (resolve, reject) => {
+      const [error, client] = await this._getBoundClient();
+      if (error) {
+        /* istanbul ignore next */
+        return reject(error);
+      }
+      let opts = {
+        filter: '(&(objectClass=msFVE-RecoveryInformation))',
+        scope: 'sub',
+        attributes: ['dn', 'cn', 'msFVE-RecoveryPassword']
+      };
+      const results = [];
+      client.search(this.config.baseDN, opts, (err, res) => {
+        res.on('searchEntry', function(entry) {
+          if (
+            entry.object['dn'].toLowerCase().indexOf(computer.toLowerCase()) !==
+            -1
+          ) {
+            results.push(entry.object);
+          }
+        });
+        res.on('error', function(err) {
+          resolve([err]);
+        });
+        res.on('end', function(result) {
+          resolve([null, results]);
+        });
+      });
+    });
   }
 };
